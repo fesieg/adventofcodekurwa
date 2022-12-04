@@ -7,7 +7,7 @@ textInput = fr.getTextFileContentAsList('data/day2.md')
 pointValues = { 'A': 1,'X': 1,'B': 2,'Y': 2, 'C': 3, 'Z': 3 }
 
 def isWin(opp, me):
-    # opps value - our value is a loss for 2 if they chose the 3-value option
+    # opps value - our value = 2 is a loss if they chose the 3-value option
     if pointValues[opp] == 3:
         return (pointValues[opp] - pointValues[me]) == 2
     else:
