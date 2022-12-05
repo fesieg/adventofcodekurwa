@@ -7,10 +7,23 @@ class CraneStack:
     def __init__(self, items) -> None:
         self.items = items
 
+    def returnAndRemoveMultipleFromTop(self, x):
+        returnStack = self.items[:x] 
+        self.items = self.items[x:len(self.items)]
+        return returnStack
+
     def returnAndRemoveTopItem(self):
         removedItem = self.items[0]
         self.items = self.items[1:]
         return removedItem
+
+    def addListOfItemsToStack(self, items):
+        if len(items) == 1:
+            self.addItemToStack(items[0])
+        else:
+            for n in range(len(items) - 1, - 1 , - 1):
+                self.addItemToStack(items[n])
+
 
     def addItemToStack(self, item):
         self.items.insert(0, item)
@@ -37,18 +50,23 @@ class CraneMap:
                 if line[c].isalpha():
                     stacks[indexMap[c]] += line[c]
         
-        self.craneStacks = [CraneStack(stack) for stack in stacks]  
+        self.craneStacks = [CraneStack(stack) for stack in stacks] 
         
         self.operations = []
         # initialize operation plan via regex
         for n in [re.findall(r'\b\d+\b', line) for line in planMap]:
             self.operations.append([int(x) for x in n])
 
-        # print([s.items for s in self.craneStacks], len(self.craneStacks))
 
-    def runPlan(self):
+    def runPlanPart1(self):
         for operation in self.operations:
-            self.moveXToNewStack(x=operation[0], start=operation[1], target=operation[2])
+            self.moveItemToNewStackXTimes(x=operation[0], start=operation[1], target=operation[2])
+
+
+    def runPlanPart2(self):
+        for operation in self.operations:
+            self.moveXItemsToNewStackAtOnce(x=operation[0], start=operation[1], target=operation[2])
+
 
     def getNumberOfStacksInMap(self, map):
         # find highest number items are moved to
@@ -56,13 +74,18 @@ class CraneMap:
         # but it works for all inputs i've tested
         return max([int(l.split('to')[1]) for l in map if 'to' in l])
 
-    def moveXToNewStack(self, x, start, target):
+
+    def moveXItemsToNewStackAtOnce(self, x, start, target):
+        self.craneStacks[target - 1].addListOfItemsToStack(self.craneStacks[start - 1].returnAndRemoveMultipleFromTop(x))
+        
+
+    def moveItemToNewStackXTimes(self, x, start, target):
         for n in range(x):
             itemToMove = self.craneStacks[start - 1].returnAndRemoveTopItem()
             self.craneStacks[target - 1].addItemToStack(itemToMove)
 
 
 craneMap = CraneMap(textInput)
-craneMap.runPlan()
-# part 1
-print(''.join([c.returnAndRemoveTopItem() for c in craneMap.craneStacks]))
+# craneMap.runPlanPart1()
+craneMap.runPlanPart2()
+print(''.join([c.items[0] for c in craneMap.craneStacks]))
