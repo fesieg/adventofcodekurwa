@@ -1,6 +1,6 @@
 import utils.fileReader as fr
 
-textInput = fr.getTextFileContentAsListOfLines('data/day4.md')
+textInput = fr.getTextFileContentAsListOfLines('data/day4.md', trim=True)
 
 ranges = []
 for pair in [x.split(',') for x in textInput]:

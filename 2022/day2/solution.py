@@ -2,7 +2,7 @@ import utils.fileReader as fr
 
 # bonus = language agnostic
 
-textInput = fr.getTextFileContentAsList('data/day2.md')
+textInput = fr.getTextFileContentAsList('data/day2.md', trim=True)
 
 pointValues = { 'A': 1,'X': 1,'B': 2,'Y': 2, 'C': 3, 'Z': 3 }
 

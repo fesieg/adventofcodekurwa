@@ -1,7 +1,7 @@
 import utils.fileReader as fr
 from string import ascii_letters
 
-textInput = fr.getTextFileContentAsList('data/day3.md')
+textInput = fr.getTextFileContentAsList('data/day3.md', trim=True)
 
 
 def part1(textInput):

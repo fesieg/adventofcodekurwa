@@ -1,6 +1,6 @@
 import utils.fileReader as fr
 
-textInput = fr.getTextFileContentAsList('data/day1.md')
+textInput = fr.getTextFileContentAsList('data/day1.md', trim=True)
 
 elves = []
 
