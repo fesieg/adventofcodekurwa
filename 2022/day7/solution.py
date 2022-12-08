@@ -6,6 +6,9 @@ shellLines = fr.getTextFileContentAsListOfLines('data/day7.md', trim=True)[1:]
 class AdventTreeScraper:
     def __init__(self) -> None:
         self.totalBelowLimit = 0
+        self.totalHardDriveSize = 70000000
+        self.needUnused = 30000000
+        self.listOfSizes = []
 
     def __call__(self, total):
         self.totalBelowLimit += total
@@ -28,7 +31,8 @@ class AdventDirectory:
  
     def walkTreeAndExtractSizes(self, scraper: AdventTreeScraper):
         self.totalSizeIncludingSubDirs = self.getTotalSizeOfSubTree()
-        if self.totalSizeIncludingSubDirs <= 100000: scraper(self.totalSizeIncludingSubDirs)
+        # if self.totalSizeIncludingSubDirs <= 100000: scraper(self.totalSizeIncludingSubDirs)
+        scraper.listOfSizes.append(self.totalSizeIncludingSubDirs)
         for d in self.directories:
             d.walkTreeAndExtractSizes(scraper)
     
@@ -45,9 +49,7 @@ class AdventDirectory:
 
 
 # we skip the first line when taking the input
-tree = []
 rootDir = AdventDirectory('/', None)
-tree.append(rootDir)
 currentDir = rootDir
 
 for l in range(len(shellLines)):
@@ -75,6 +77,8 @@ for l in range(len(shellLines)):
 
 scraper = AdventTreeScraper()
 rootDir.walkTreeAndExtractSizes(scraper)
-print(scraper.totalBelowLimit)
-
+# print(scraper.totalBelowLimit)
+total = rootDir.getTotalSizeOfSubTree()
+needFree = scraper.needUnused - (scraper.totalHardDriveSize - rootDir.getTotalSizeOfSubTree())
+print("SMALLEST TO FREE SPACE IS ", min([x for x in scraper.listOfSizes if x > needFree]))
 
