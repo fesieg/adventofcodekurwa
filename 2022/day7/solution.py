@@ -31,7 +31,9 @@ class AdventDirectory:
  
     def walkTreeAndExtractSizes(self, scraper: AdventTreeScraper):
         self.totalSizeIncludingSubDirs = self.getTotalSizeOfSubTree()
+        # below is part 1
         # if self.totalSizeIncludingSubDirs <= 100000: scraper(self.totalSizeIncludingSubDirs)
+        # below is part 2
         scraper.listOfSizes.append(self.totalSizeIncludingSubDirs)
         for d in self.directories:
             d.walkTreeAndExtractSizes(scraper)
